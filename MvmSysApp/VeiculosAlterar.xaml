@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Estrutura IDÊNTICA à tela Inserir; o que muda é o code-behind:
+     aqui o construtor recebe o veículo e chama formVeiculo.Preencher() -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:comp="clr-namespace:MvmSysApp.Components"
+             x:Class="MvmSysApp.VeiculosAlterar"
+             Title="Veículos &gt; Alterar">
+
+    <!-- ScrollView: garante rolagem quando o teclado cobre os campos -->
+    <ScrollView>
+        <VerticalStackLayout Padding="20"
+                             Spacing="20">
+
+            <!-- Componente reutilizado nas telas Inserir e Alterar -->
+            <comp:VeiculoForm x:Name="formVeiculo" />
+
+            <!-- Botões lado a lado: colunas de largura igual (*,*) -->
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10">
+                <Button x:Name="btVoltar"
+                        Text="Voltar"
+                        Clicked="btVoltarOnClick" />
+
+                <Button x:Name="btSalvar"
+                        Grid.Column="1"
+                        Text="Salvar"
+                        Clicked="btSalvarOnClick" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

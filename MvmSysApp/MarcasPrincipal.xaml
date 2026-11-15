@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MvmSysApp.Models"
+             x:Class="MvmSysApp.MarcasPrincipal"
+             Title="Marcas">
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          Padding="15"
+          RowSpacing="10">
+
+        <!-- Pesquisar -->
+        <SearchBar x:Name="sbPesquisar"
+                   Placeholder="Pesquisar"
+                   TextChanged="sbPesquisarOnTextChanged" />
+
+        <!-- Lista com Editar (Update) e Excluir (Delete) em cada item -->
+        <CollectionView x:Name="cvMarcas"
+                        Grid.Row="1"
+                        SelectionMode="None">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.EmptyView>
+                <Label Text="Nenhuma marca encontrada."
+                       HorizontalTextAlignment="Center"
+                       Margin="0,30" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Marca">
+                    <Border Padding="10"
+                            StrokeShape="RoundRectangle 8">
+                        <Grid ColumnDefinitions="*,Auto,Auto"
+                              ColumnSpacing="8">
+
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="{Binding Nome}"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding Detalhe}"
+                                       FontSize="12" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Column="1"
+                                    Text="✎"
+                                    SemanticProperties.Description="Editar"
+                                    Clicked="btnAlterarOnClick" />
+
+                            <Button Grid.Column="2"
+                                    Text="🗑"
+                                    SemanticProperties.Description="Excluir"
+                                    Clicked="btnExcluirOnClick" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Inserir (Create) -->
+        <Button Grid.Row="2"
+                Text="Adicionar"
+                HorizontalOptions="Center"
+                Clicked="btnInserirOnClick" />
+    </Grid>
+</ContentPage>

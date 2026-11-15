@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ContentView: componente VISUAL reutilizável (não é uma página).
+     Ele é embutido nas telas com a tag <comp:VeiculoForm />.
+     Assim Inserir e Alterar compartilham o MESMO formulário. -->
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MvmSysApp.Components.VeiculoForm">
+    <!-- Empilha rótulo + campo, com espaço de 10 entre cada par -->
+    <VerticalStackLayout Spacing="10">
+        <Label Text="Placa" />
+        <!-- Entry: caixa de texto de uma linha.
+             x:Name     -> acesso no C# (entPlaca.Text)
+             Placeholder-> dica quando vazio
+             MaxLength  -> limita os caracteres digitados -->
+        <Entry x:Name="entPlaca" Placeholder="Ex.: ABC1D23" MaxLength="8" />
+
+        <Label Text="Modelo" />
+        <Entry x:Name="entModelo" Placeholder="Ex.: Corolla" MaxLength="50" />
+
+        <Label Text="Cor" />
+        <Entry x:Name="entCor" Placeholder="Ex.: Prata" MaxLength="30" />
+
+        <Label Text="Ano" />
+        <!-- Keyboard="Numeric": abre o teclado numérico no celular -->
+        <Entry x:Name="entAno" Placeholder="Ex.: 2022" Keyboard="Numeric" MaxLength="4" />
+
+        <Label Text="Data de aquisição" />
+        <!-- DatePicker: seletor de data (o limite máximo é definido no code-behind) -->
+        <DatePicker x:Name="dpAquisicao" />
+
+        <!-- CheckBox: caixa de marcar (sim/não) -->
+        <HorizontalStackLayout Spacing="10">
+            <CheckBox x:Name="chkLicenciado"
+                      VerticalOptions="Center"
+                      SemanticProperties.Description="Veículo licenciado" />
+            <Label Text="Veículo licenciado" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <Label Text="Observações" />
+        <!-- Editor: caixa de texto de VÁRIAS linhas -->
+        <Editor x:Name="edtObservacoes"
+                Placeholder="Informações adicionais (opcional)"
+                HeightRequest="100"
+                MaxLength="200" />
+    </VerticalStackLayout>
+</ContentView>

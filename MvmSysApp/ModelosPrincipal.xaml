@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MvmSysApp.Models"
+             x:Class="MvmSysApp.ModelosPrincipal"
+             Title="Modelos">
+
+    <Grid RowDefinitions="Auto,*,Auto"
+          Padding="15"
+          RowSpacing="10">
+
+        <!-- Pesquisar -->
+        <SearchBar x:Name="sbPesquisar"
+                   Placeholder="Pesquisar"
+                   TextChanged="sbPesquisarOnTextChanged" />
+
+        <!-- Lista em GRADE (2 colunas) com Editar (Update) e Excluir (Delete) em cada card.
+             GridItemsLayout Span="2" -> dois cards por linha -->
+        <CollectionView x:Name="cvModelos"
+                        Grid.Row="1"
+                        SelectionMode="None">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical"
+                                 Span="2"
+                                 VerticalItemSpacing="8"
+                                 HorizontalItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum modelo encontrado."
+                       HorizontalTextAlignment="Center"
+                       Margin="0,30" />
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Modelo">
+                    <Border Padding="10"
+                            StrokeShape="RoundRectangle 8">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{Binding Nome}"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding Detalhe}"
+                                   FontSize="12" />
+
+                            <Grid ColumnDefinitions="*,*"
+                                  ColumnSpacing="8">
+                                <Button Text="✎"
+                                        SemanticProperties.Description="Editar"
+                                        Clicked="btnAlterarOnClick" />
+
+                                <Button Grid.Column="1"
+                                        Text="🗑️"
+                                        SemanticProperties.Description="Excluir"
+                                        Clicked="btnExcluirOnClick" />
+                            </Grid>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Inserir (Create) -->
+        <Button Grid.Row="2"
+                Text="Adicionar"
+                HorizontalOptions="Center"
+                Clicked="btnInserirOnClick" />
+    </Grid>
+</ContentPage>

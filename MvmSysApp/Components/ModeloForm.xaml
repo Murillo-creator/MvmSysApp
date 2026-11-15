@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MvmSysApp.Components.ModeloForm">
+    <VerticalStackLayout Spacing="10">
+        <Label Text="Nome do modelo" />
+        <Entry x:Name="entNome" Placeholder="Ex.: Corolla" MaxLength="50" />
+
+        <Label Text="Categoria" />
+        <!-- RadioButton: só UMA opção marcada por grupo.
+             RadioButtonGroup.GroupName no container agrupa todos os filhos. -->
+        <VerticalStackLayout RadioButtonGroup.GroupName="categoria">
+            <RadioButton x:Name="rbSedan" Content="Sedan" />
+            <RadioButton x:Name="rbHatch" Content="Hatch" />
+            <RadioButton x:Name="rbSuv" Content="SUV" />
+            <RadioButton x:Name="rbPicape" Content="Picape" />
+        </VerticalStackLayout>
+
+        <Label x:Name="lblPortas" Text="Número de portas: 4" />
+        <!-- Stepper: botões − / + para escolher um número dentro de um intervalo -->
+        <Stepper x:Name="stpPortas"
+                 Minimum="2"
+                 Maximum="5"
+                 Increment="1"
+                 Value="4"
+                 HorizontalOptions="Start"
+                 ValueChanged="stpPortasOnValueChanged" />
+    </VerticalStackLayout>
+</ContentView>

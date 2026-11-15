@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- TELA INICIAL: mostra um ícone (card) para cada opção de navegação.
+     Tocar no card navega para a tela correspondente (ver MainPage.xaml.cs). -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MvmSysApp.MainPage"
+             Title="Home">
+
+    <ContentPage.Resources>
+        <!-- Os ícones são PNG pretos com fundo transparente. Por isso o card
+             tem fundo claro FIXO: assim o ícone aparece também no tema escuro. -->
+        <Style x:Key="CardOpcao" TargetType="Border">
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 12" />
+            <Setter Property="BackgroundColor" Value="{StaticResource Gray100}" />
+        </Style>
+
+        <Style x:Key="IconeOpcao" TargetType="Image">
+            <Setter Property="HeightRequest" Value="64" />
+            <Setter Property="WidthRequest" Value="64" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="TituloOpcao" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Black}" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+
+        <Style x:Key="DescricaoOpcao" TargetType="Label">
+            <Setter Property="TextColor" Value="{StaticResource Gray600}" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+
+            <Image Source="mvm_logo.png"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   SemanticProperties.Description="Logotipo do MVMSys" />
+
+            <Label Text="Bem-vindo ao MVMSys"
+                   Style="{StaticResource Headline}"
+                   SemanticProperties.HeadingLevel="Level1" />
+
+            <Label Text="Escolha uma opção abaixo para começar."
+                   HorizontalTextAlignment="Center" />
+
+            <!-- Grade 2x2 de cards. CommandParameter guarda a ROTA (Route) do
+                 ShellContent correspondente, definida no AppShell.xaml. -->
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="Auto,Auto"
+                  ColumnSpacing="15"
+                  RowSpacing="15">
+
+                <Border Grid.Row="0" Grid.Column="0"
+                        Style="{StaticResource CardOpcao}"
+                        SemanticProperties.Description="Abrir Marcas">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOpcaoTapped" CommandParameter="MarcasPrincipal" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="marcas.png" Style="{StaticResource IconeOpcao}" />
+                        <Label Text="Marcas" Style="{StaticResource TituloOpcao}" />
+                        <Label Text="Cadastro de marcas" Style="{StaticResource DescricaoOpcao}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="1"
+                        Style="{StaticResource CardOpcao}"
+                        SemanticProperties.Description="Abrir Veículos">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOpcaoTapped" CommandParameter="VeiculosPrincipal" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="veiculo.png" Style="{StaticResource IconeOpcao}" />
+                        <Label Text="Veículos" Style="{StaticResource TituloOpcao}" />
+                        <Label Text="Cadastro de veículos" Style="{StaticResource DescricaoOpcao}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="0"
+                        Style="{StaticResource CardOpcao}"
+                        SemanticProperties.Description="Abrir Modelos">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOpcaoTapped" CommandParameter="ModelosPrincipal" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="modelo.png" Style="{StaticResource IconeOpcao}" />
+                        <Label Text="Modelos" Style="{StaticResource TituloOpcao}" />
+                        <Label Text="Cadastro de modelos" Style="{StaticResource DescricaoOpcao}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="1"
+                        Style="{StaticResource CardOpcao}"
+                        SemanticProperties.Description="Abrir Sobre">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnOpcaoTapped" CommandParameter="Sobre" />
+                    </Border.GestureRecognizers>
+                    <VerticalStackLayout Spacing="6">
+                        <Image Source="sobre.png" Style="{StaticResource IconeOpcao}" />
+                        <Label Text="Sobre" Style="{StaticResource TituloOpcao}" />
+                        <Label Text="Informações do app" Style="{StaticResource DescricaoOpcao}" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- xmlns:comp importa os componentes reutilizáveis (pasta Components).
+     &gt; é o escape do sinal ">" dentro de um atributo XML. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:comp="clr-namespace:MvmSysApp.Components"
+             x:Class="MvmSysApp.VeiculosInserir"
+             Title="Veículos &gt; Inserir">
+
+    <!-- ScrollView: permite rolar a tela quando o teclado abre
+         e cobre os campos -->
+    <ScrollView>
+        <!-- VerticalStackLayout: empilha os filhos na vertical.
+             Padding -> margem interna; Spacing -> espaço entre filhos -->
+        <VerticalStackLayout Padding="20"
+                             Spacing="20">
+
+            <!-- Componente reutilizado nas telas Inserir e Alterar.
+                 O MESMO formulário serve para Create e Update. -->
+            <comp:VeiculoForm x:Name="formVeiculo" />
+
+            <!-- Grid de 2 colunas iguais (*,*) para os botões -->
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10">
+                <!-- Coluna 0 (implícita) -->
+                <Button x:Name="btVoltar"
+                        Text="Voltar"
+                        Clicked="btVoltarOnClick" />
+
+                <!-- Grid.Column="1" posiciona na 2ª coluna -->
+                <Button x:Name="btSalvar"
+                        Grid.Column="1"
+                        Text="Salvar"
+                        Clicked="btSalvarOnClick" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

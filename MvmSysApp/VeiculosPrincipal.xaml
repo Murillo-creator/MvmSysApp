@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ContentPage: página base do .NET MAUI (uma tela do app).
+     xmlns        -> namespace padrão dos controles MAUI (Grid, Button, Label...)
+     xmlns:x      -> recursos do XAML (x:Class, x:Name, x:DataType)
+     xmlns:models -> importa o namespace C# MvmSysApp.Models para usar no x:DataType
+     x:Class      -> liga este XAML ao code-behind VeiculosPrincipal.xaml.cs
+     Title        -> título exibido na barra de navegação -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MvmSysApp.Models"
+             x:Class="MvmSysApp.VeiculosPrincipal"
+             Title="Veículos">
+
+    <!-- Grid: layout em grade. RowDefinitions="Auto,*,Auto" cria 3 linhas:
+         Auto -> altura automática (linha 0: SearchBar)
+         *    -> ocupa todo o espaço restante (linha 1: lista)
+         Auto -> altura automática (linha 2: botão Adicionar)
+         Padding    -> margem interna de 15 em todos os lados
+         RowSpacing -> espaço de 10 entre as linhas -->
+    <Grid RowDefinitions="Auto,Auto,*,Auto"
+          Padding="15"
+          RowSpacing="10">
+
+        <!-- Pesquisar (linha 0 do Grid, implícita).
+             SearchBar: caixa de busca pronta do MAUI.
+             x:Name       -> nome para acessar no C# (sbPesquisar)
+             Placeholder  -> texto de dica quando está vazia
+             TextChanged  -> evento disparado a cada tecla digitada;
+                             chama sbPesquisarOnTextChanged no code-behind -->
+        <SearchBar x:Name="sbPesquisar"
+                   Placeholder="Pesquisar"
+                   TextChanged="sbPesquisarOnTextChanged" />
+
+        <!-- Filtro (linha 1): CheckBox "Somente licenciados".
+             CheckedChanged -> recarrega a lista aplicando o filtro -->
+        <HorizontalStackLayout Grid.Row="1" Spacing="8">
+            <CheckBox x:Name="chkSomenteLicenciados"
+                      VerticalOptions="Center"
+                      SemanticProperties.Description="Somente licenciados"
+                      CheckedChanged="chkSomenteLicenciadosOnCheckedChanged" />
+            <Label Text="Somente licenciados" VerticalOptions="Center" />
+        </HorizontalStackLayout>
+
+        <!-- Lista com Editar (Update) e Excluir (Delete) em cada item.
+             CollectionView: lista rolável e virtualizada (renderiza só o visível).
+             Grid.Row="1"       -> posiciona na linha 1 do Grid (a linha "*")
+             SelectionMode="None" -> desativa a seleção de itens
+                                    (os cliques ficam por conta dos botões) -->
+        <CollectionView x:Name="cvVeiculos"
+                        Grid.Row="2"
+                        SelectionMode="None">
+
+            <!-- ItemsLayout: define COMO os itens são dispostos.
+                 LinearItemsLayout Vertical -> um item embaixo do outro
+                 ItemSpacing="8"            -> espaço de 8 entre os itens -->
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+
+            <!-- EmptyView: conteúdo mostrado quando a lista está VAZIA
+                 (ItemsSource nulo ou sem itens) -->
+            <CollectionView.EmptyView>
+                <Label Text="Nenhum veículo encontrado."
+                       HorizontalTextAlignment="Center"
+                       Margin="0,30" />
+            </CollectionView.EmptyView>
+
+            <!-- ItemTemplate: o "molde" visual de CADA item da lista.
+                 DataTemplate repete esse conteúdo para cada Veiculo.
+                 x:DataType="models:Veiculo" -> informa que o item é um Veiculo;
+                     ativa compiled bindings (mais rápido e valida em tempo
+                     de compilação os nomes usados no Binding) -->
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Veiculo">
+                    <!-- Border: cartão com cantos arredondados (raio 8)
+                         que envolve cada item da lista -->
+                    <Border Padding="10"
+                            StrokeShape="RoundRectangle 8">
+                        <!-- Grid interno do item: 3 colunas
+                             *    -> textos ocupam o espaço que sobrar
+                             Auto -> botões só do tamanho do conteúdo -->
+                        <Grid ColumnDefinitions="*,Auto,Auto"
+                              ColumnSpacing="8">
+
+                            <!-- Coluna 0 (implícita): textos do veículo empilhados.
+                                 VerticalOptions="Center" centraliza na altura do item.
+                                 {Binding Placa}   -> mostra a propriedade Placa do Veiculo
+                                 {Binding Detalhe} -> mostra a propriedade Detalhe -->
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="{Binding Placa}"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding Detalhe}"
+                                       FontSize="12" />
+                                <Label Text="{Binding Situacao}"
+                                       FontSize="12" />
+                            </VerticalStackLayout>
+
+                            <!-- Coluna 1: botão Editar (Update).
+                                 Clicked -> chama btnAlterarOnClick no code-behind;
+                                 lá, o BindingContext do botão identifica QUAL
+                                 veículo foi clicado.
+                                 SemanticProperties.Description -> texto para
+                                 acessibilidade (leitor de tela), já que o botão
+                                 usa só um símbolo -->
+                            <Button Grid.Column="1"
+                                    Text="✎"
+                                    SemanticProperties.Description="Editar"
+                                    Clicked="btnAlterarOnClick" />
+
+                            <!-- Coluna 2: botão Excluir (Delete).
+                                 Mesma lógica do Editar, chamando btnExcluirOnClick -->
+                            <Button Grid.Column="2"
+                                    Text="🗑️"
+                                    SemanticProperties.Description="Excluir"
+                                    Clicked="btnExcluirOnClick" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Inserir (Create): botão fixo na linha 2 do Grid.
+             HorizontalOptions="Center" centraliza na largura.
+             Clicked -> chama btnInserirOnClick (abre a tela de cadastro) -->
+        <Button Grid.Row="3"
+                Text="Adicionar"
+                HorizontalOptions="Center"
+                Clicked="btnInserirOnClick" />
+    </Grid>
+</ContentPage>

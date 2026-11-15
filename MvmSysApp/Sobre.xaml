@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MvmSysApp.Sobre"
+             Title="Sobre">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="15">
+            <Image Source="mvm_logo.png"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   SemanticProperties.Description="Logotipo do MVMSys" />
+
+            <Label Text="MVMSys"
+                   Style="{StaticResource Headline}"
+                   FontAttributes="Bold"
+                   SemanticProperties.HeadingLevel="Level1" />
+
+            <Label x:Name="lblVersao"
+                   HorizontalTextAlignment="Center" />
+
+            <Label Text="Aplicativo em .NET MAUI com cadastro de marcas, modelos e veículos."
+                   HorizontalTextAlignment="Center" />
+            
+            <Label Text="Murillo Freitas"
+                   HorizontalTextAlignment="Center"/>
+
+            <Label Text="RA: 2508097"
+                    HorizontalTextAlignment="Center"/>
+
+            <Label Text="Data: 30/09/2026"
+                   HorizontalTextAlignment="Center"
+                   BackgroundColor="LightGray"/>
+           
+            <Label Text="Copyright @Freitas, M."
+                   FontSize="12"
+                   HorizontalTextAlignment="Center" />
+
+            <Button
+                    HorizontalOptions="Center"
+                    Text="Voltar para Home"
+                    Clicked="BtnVoltarHomeOnClick" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

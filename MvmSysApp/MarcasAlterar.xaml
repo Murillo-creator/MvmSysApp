@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:comp="clr-namespace:MvmSysApp.Components"
+             x:Class="MvmSysApp.MarcasAlterar"
+             Title="Marcas &gt; Alterar">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20"
+                             Spacing="20">
+
+            <!-- Componente reutilizado nas telas Inserir e Alterar -->
+            <comp:MarcaForm x:Name="formMarca" />
+
+            <Grid ColumnDefinitions="*,*"
+                  ColumnSpacing="10">
+                <Button x:Name="btVoltar"
+                        Text="Voltar"
+                        Clicked="btVoltarOnClick" />
+
+                <Button x:Name="btSalvar"
+                        Grid.Column="1"
+                        Text="Salvar"
+                        Clicked="btSalvarOnClick" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

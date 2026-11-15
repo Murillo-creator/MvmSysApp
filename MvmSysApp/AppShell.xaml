@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell
+    x:Class="MvmSysApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MvmSysApp"
+    Title="MvmSysApp">
+
+    <!-- FlyOut: CABEÇALHO (logo + nome do app) -->
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="15"
+                             Spacing="15"
+                             BackgroundColor="MediumPurple">
+
+            <Image Source="mvm_logo.png"
+                   HeightRequest="100"
+                   WidthRequest="100"/>
+
+            <Label Text="MVMSYS APP"
+                   TextColor="White"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+
+    <!-- MENUS DE NAVEGAÇÃO:
+         - FlyOut (menu lateral): cada ShellContent abaixo aparece como item do menu
+           (FlyoutDisplayOptions="AsMultipleItems").
+         - Navigation Bar (barra de abas): como o FlyoutItem tem vários ShellContent,
+           o Shell também exibe a barra de abas com o Icon e o Title de cada um.
+         O Icon de cada opção também é usado nos cards da tela inicial (MainPage). -->
+    <FlyoutItem Title="MVMSYS MENU"
+                FlyoutDisplayOptions="AsMultipleItems">
+
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage"
+            Icon="home.png"/>
+
+        <ShellContent
+            Title="Marcas"
+            ContentTemplate="{DataTemplate local:MarcasPrincipal}"
+            Route="MarcasPrincipal"
+            Icon="marcas.png"/>
+
+        <ShellContent
+            Title="Veículos"
+            ContentTemplate="{DataTemplate local:VeiculosPrincipal}"
+            Route="VeiculosPrincipal"
+            Icon="veiculo.png"/>
+        
+
+        <ShellContent
+            Title="Modelos"
+            ContentTemplate="{DataTemplate local:ModelosPrincipal}"
+            Route="ModelosPrincipal"
+            Icon="modelo.png"/>
+
+
+        <ShellContent
+            Title="Sobre"
+            ContentTemplate="{DataTemplate local:Sobre}"
+            Route="Sobre"
+            Icon="sobre.png"/>
+    </FlyoutItem>
+
+
+    <!-- FlyOut: RODAPÉ -->
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="20"
+                               Spacing="20">
+            <Label Text="Copyright @Freitas, M."
+                   HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+
+</Shell>
