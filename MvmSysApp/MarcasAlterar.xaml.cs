@@ -5,14 +5,17 @@ namespace MvmSysApp;
 
 public partial class MarcasAlterar : ContentPage
 {
+    private readonly MarcaRepository _marcas;
     private readonly Marca _marca;
 
     // Recebe o item escolhido na tela Principal
-    public MarcasAlterar(Marca marca)
+    public MarcasAlterar(MarcaRepository marcas, Marca marca)
     {
         InitializeComponent();
 
+        _marcas = marcas;
         _marca = marca;
+
         formMarca.Preencher(_marca);
     }
 
@@ -32,8 +35,8 @@ public partial class MarcasAlterar : ContentPage
         }
 
         formMarca.CopiarPara(_marca);
-        Repositorios.Marcas.Alterar(_marca);
 
+        await _marcas.SalvarAsync(_marca);
         await Navigation.PopAsync();
     }
 }

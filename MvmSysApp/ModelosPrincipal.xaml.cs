@@ -5,39 +5,44 @@ namespace MvmSysApp;
 
 public partial class ModelosPrincipal : ContentPage
 {
-    public ModelosPrincipal()
+    private readonly ModeloRepository _modelos;
+
+    public ModelosPrincipal(ModeloRepository modelos)
     {
         InitializeComponent();
+        _modelos = modelos;
     }
 
     // Roda toda vez que a tela aparece, inclusive ao voltar de Inserir/Alterar.
     // É isso que faz a lista atualizar sozinha depois de salvar.
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        CarregarLista();
+        await CarregarListaAsync();
     }
 
     // READ: busca no repositório, aplica o filtro da pesquisa e mostra na lista
-    private void CarregarLista()
+    private async Task CarregarListaAsync()
     {
         string termo = sbPesquisar.Text?.Trim() ?? string.Empty;
+        var modelos = await _modelos.ListarAsync();
 
-        cvModelos.ItemsSource = Repositorios.Modelos.Listar()
-            .Where(x => x.Nome.Contains(termo, StringComparison.OrdinalIgnoreCase) || x.Categoria.Contains(termo, StringComparison.OrdinalIgnoreCase))
-            .OrderBy(x => x.Nome)
+        cvModelos.ItemsSource = modelos
+            .Where(m => m.Nome.Contains(termo, StringComparison.OrdinalIgnoreCase) || 
+            m.Categoria.Contains(termo, StringComparison.OrdinalIgnoreCase))
+            .OrderBy(m => m.Nome)
             .ToList();
     }
 
-    private void sbPesquisarOnTextChanged(object? sender, TextChangedEventArgs e)
+    private async void sbPesquisarOnTextChanged(object? sender, TextChangedEventArgs e)
     {
-        CarregarLista();
+        await CarregarListaAsync();
     }
 
     // CREATE: abre a tela de inserção
     private async void btnInserirOnClick(object? sender, EventArgs e)
     {
-        await Navigation.PushAsync(new ModelosInserir());
+        await Navigation.PushAsync(new ModelosInserir(_modelos));
     }
 
     // UPDATE: abre a tela de alteração enviando o item da linha clicada
@@ -46,7 +51,7 @@ public partial class ModelosPrincipal : ContentPage
         if (sender is not Button { BindingContext: Modelo modelo })
             return;
 
-        await Navigation.PushAsync(new ModelosAlterar(modelo));
+        await Navigation.PushAsync(new ModelosAlterar(_modelos, modelo));
     }
 
     // DELETE: pede confirmação e remove
@@ -64,7 +69,7 @@ public partial class ModelosPrincipal : ContentPage
         if (!confirmou)
             return;
 
-        Repositorios.Modelos.Excluir(modelo.Id);
-        CarregarLista();
+        await _modelos.ExcluirAsync(modelo.Id);
+        await CarregarListaAsync();
     }
 }

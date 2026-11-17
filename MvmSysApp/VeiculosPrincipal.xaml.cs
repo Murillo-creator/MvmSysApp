@@ -7,21 +7,23 @@ namespace MvmSysApp;
 // Herda ContentPage -> é uma tela do app.
 public partial class VeiculosPrincipal : ContentPage
 {
-    public VeiculosPrincipal()
+    private readonly VeiculoRepository _veiculos;
+    public VeiculosPrincipal(VeiculoRepository veiculos)
     {
         InitializeComponent(); // carrega o XAML e cria os controles (sbPesquisar, cvVeiculos...)
+        _veiculos = veiculos;
     }
 
     // Roda toda vez que a tela aparece, inclusive ao voltar de Inserir/Alterar.
     // É isso que faz a lista atualizar sozinha depois de salvar.
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        CarregarLista();
+        await CarregarListaAsync();
     }
 
     // READ: busca no repositório, aplica o filtro da pesquisa e mostra na lista
-    private void CarregarLista()
+    private async Task CarregarListaAsync()
     {
         // ?. e ??: se o texto for null, usa string vazia (evita NullReferenceException)
         string termo = sbPesquisar.Text?.Trim() ?? string.Empty;
@@ -32,30 +34,33 @@ public partial class VeiculosPrincipal : ContentPage
         // ToList  -> executa a consulta e gera uma List<Veiculo> para o ItemsSource
         bool somenteLicenciados = chkSomenteLicenciados.IsChecked;
 
-        cvVeiculos.ItemsSource = Repositorios.Veiculos.Listar()
-            .Where(x => x.Placa.Contains(termo, StringComparison.OrdinalIgnoreCase) || x.Modelo.Contains(termo, StringComparison.OrdinalIgnoreCase))
-            .Where(x => !somenteLicenciados || x.Licenciado) // filtro do CheckBox
-            .OrderBy(x => x.Placa)
+        var veiculos = await _veiculos.ListarAsync();
+
+        cvVeiculos.ItemsSource = veiculos
+            .Where(v => v.Placa.Contains(termo, StringComparison.OrdinalIgnoreCase) || 
+            v.Modelo.Contains(termo, StringComparison.OrdinalIgnoreCase))
+            .Where(v => !somenteLicenciados || v.Licenciado) // filtro do CheckBox
+            .OrderBy(v => v.Placa)
             .ToList();
     }
 
     // Evento do SearchBar: a cada tecla digitada, recarrega a lista com o novo filtro
-    private void sbPesquisarOnTextChanged(object? sender, TextChangedEventArgs e)
+    private async void sbPesquisarOnTextChanged(object? sender, TextChangedEventArgs e)
     {
-        CarregarLista();
+        await CarregarListaAsync();
     }
 
     // Evento do CheckBox: recarrega a lista com/sem o filtro de licenciados
-    private void chkSomenteLicenciadosOnCheckedChanged(object? sender, CheckedChangedEventArgs e)
+    private async void chkSomenteLicenciadosOnCheckedChanged(object? sender, CheckedChangedEventArgs e)
     {
-        CarregarLista();
+        await CarregarListaAsync();
     }
 
     // CREATE: abre a tela de inserção
     private async void btnInserirOnClick(object? sender, EventArgs e)
     {
         // PushAsync empilha a nova página por cima da atual (com animação)
-        await Navigation.PushAsync(new VeiculosInserir());
+        await Navigation.PushAsync(new VeiculosInserir(_veiculos));
     }
 
     // UPDATE: abre a tela de alteração enviando o item da linha clicada
@@ -68,7 +73,7 @@ public partial class VeiculosPrincipal : ContentPage
             return;
 
         // Passa o veiculo clicado para a tela de alteração preencher o formulário
-        await Navigation.PushAsync(new VeiculosAlterar(veiculo));
+        await Navigation.PushAsync(new VeiculosAlterar(_veiculos, veiculo));
     }
 
     // DELETE: pede confirmação e remove
@@ -87,7 +92,7 @@ public partial class VeiculosPrincipal : ContentPage
         if (!confirmou)
             return;
 
-        Repositorios.Veiculos.Excluir(veiculo.Id);
-        CarregarLista(); // recarrega para o item sumir da tela
+        await _veiculos.ExcluirAsync(veiculo.Id);
+        await CarregarListaAsync(); // recarrega para o item sumir da tela
     }
 }

@@ -5,14 +5,17 @@ namespace MvmSysApp;
 
 public partial class ModelosAlterar : ContentPage
 {
+    private readonly ModeloRepository _modelos;
     private readonly Modelo _modelo;
 
     // Recebe o item escolhido na tela Principal
-    public ModelosAlterar(Modelo modelo)
+    public ModelosAlterar(ModeloRepository modelos, Modelo modelo)
     {
         InitializeComponent();
 
+        _modelos = modelos;
         _modelo = modelo;
+
         formModelo.Preencher(_modelo);
     }
 
@@ -32,8 +35,8 @@ public partial class ModelosAlterar : ContentPage
         }
 
         formModelo.CopiarPara(_modelo);
-        Repositorios.Modelos.Alterar(_modelo);
 
+        await _modelos.SalvarAsync(_modelo);
         await Navigation.PopAsync();
     }
 }

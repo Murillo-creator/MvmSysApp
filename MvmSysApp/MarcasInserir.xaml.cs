@@ -5,9 +5,12 @@ namespace MvmSysApp;
 
 public partial class MarcasInserir : ContentPage
 {
-    public MarcasInserir()
+    private readonly MarcaRepository _marcas;
+
+    public MarcasInserir(MarcaRepository marcas)
     {
         InitializeComponent();
+        _marcas = marcas;
     }
 
     // VOLTAR: desempilha a página atual e retorna para a Principal
@@ -28,7 +31,7 @@ public partial class MarcasInserir : ContentPage
         var marca = new Marca();
         formMarca.CopiarPara(marca);
 
-        Repositorios.Marcas.Inserir(marca);
+        await _marcas.SalvarAsync(marca);
 
         await Navigation.PopAsync();
     }

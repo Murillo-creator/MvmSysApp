@@ -5,9 +5,11 @@ namespace MvmSysApp;
 
 public partial class VeiculosInserir : ContentPage
 {
-    public VeiculosInserir()
+    private readonly VeiculoRepository _veiculos;
+    public VeiculosInserir(VeiculoRepository veiculos)
     {
         InitializeComponent();
+        _veiculos = veiculos;
     }
 
     // VOLTAR: desempilha a página atual e retorna para a Principal
@@ -32,7 +34,7 @@ public partial class VeiculosInserir : ContentPage
         formVeiculo.CopiarPara(veiculo);
 
         // O Id é gerado automaticamente dentro do repositório
-        Repositorios.Veiculos.Inserir(veiculo);
+        await _veiculos.SalvarAsync(veiculo);
 
         // PopAsync volta para a Principal, que recarrega a lista no OnAppearing
         await Navigation.PopAsync();

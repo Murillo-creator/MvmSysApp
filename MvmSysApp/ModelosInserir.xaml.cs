@@ -5,9 +5,11 @@ namespace MvmSysApp;
 
 public partial class ModelosInserir : ContentPage
 {
-    public ModelosInserir()
+    private readonly ModeloRepository _modelos;
+    public ModelosInserir(ModeloRepository modelos)
     {
         InitializeComponent();
+        _modelos = modelos;
     }
 
     // VOLTAR: desempilha a página atual e retorna para a Principal
@@ -28,8 +30,7 @@ public partial class ModelosInserir : ContentPage
         var modelo = new Modelo();
         formModelo.CopiarPara(modelo);
 
-        Repositorios.Modelos.Inserir(modelo);
-
+        await _modelos.SalvarAsync(modelo);
         await Navigation.PopAsync();
     }
 }

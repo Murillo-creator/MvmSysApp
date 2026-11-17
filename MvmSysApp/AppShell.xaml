@@ -41,20 +41,17 @@
 
         <ShellContent
             Title="Marcas"
-            ContentTemplate="{DataTemplate local:MarcasPrincipal}"
             Route="MarcasPrincipal"
             Icon="marcas.png"/>
 
         <ShellContent
             Title="Veículos"
-            ContentTemplate="{DataTemplate local:VeiculosPrincipal}"
             Route="VeiculosPrincipal"
             Icon="veiculo.png"/>
         
 
         <ShellContent
             Title="Modelos"
-            ContentTemplate="{DataTemplate local:ModelosPrincipal}"
             Route="ModelosPrincipal"
             Icon="modelo.png"/>
 
